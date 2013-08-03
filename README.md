@@ -24,7 +24,4 @@ $ sudo ./logstash_server
 
 All of the logstash services (elasticsearch, logstash, and Kibana) will be listening on their default ports.
 
-Some things you may want to change before running the bootstrap:
-
-1. The data directory in elasticsearch/elasticsearch.yml
-2.  
+You may want to change the default data directory for Elasticsearch.
