@@ -1,0 +1,68 @@
+#!/bin/bash
+set -e
+
+# This script will automatically install and configure Logstash and Kibana
+
+# Grab the fullpath of our root directory
+ROOT=$(cd `dirname ${BASH_SOURCE[0]}` && echo $PWD)
+
+apt-get install -y --force-yes redis-server openjdk-7-jre-headless rubygems
+
+# Redis serves as the queue for logstash logs
+sed -ie 's#bind 127.0.0.1#bind 0.0.0.0#' /etc/redis/redis.conf
+# This keeps redis background dumping from crashing if you run low
+# on system memory.
+echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
+sysctl -p
+/etc/init.d/redis-server restart
+
+# Install and configure elasticsearch
+wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.1.deb -O /tmp/elasticsearch.deb
+dpkg -i /tmp/elasticsearch.deb
+rm /tmp/elasticsearch.deb
+
+# These configurations are for a large, 192GB Dell R720. You'll need to adjust
+# them for use on any smaller systems.
+cp $ROOT/etc/elasticsearch/elasticsearch.yml .
+cp $ROOT/default/elasticsearch /etc/default/elasticsearch
+/etc/init.d/elasticsearch start
+
+# Logstash is just a jar and requires some additional configs
+LOGHOME=/etc/logstash
+mkdir $LOGHOME && pushd $LOGHOME
+wget https://logstash.objects.dreamhost.com/release/logstash-1.1.13-flatjar.jar -O logstash.jar
+cp $ROOT/conf/indexer.conf .
+cp $ROOT/init/logstash.conf /etc/init/
+mkdir /var/lib/logstash # Required working directory for logstash
+service logstash start
+popd
+
+# Install and configure the Kibana frontend
+pushd /opt/
+git clone --branch=kibana-ruby https://github.com/rashidkpc/Kibana.git
+pushd Kibana
+sed -i 's#KibanaHost =.*#KibanaHost = 0.0.0.0#' KibanaConfig.rb
+sed -i 's#KibanaPort =.*#KibanaPort = 80#' KibanaConfig.rb
+gem install bundler
+bundle installvm
+cp $ROOT/init/kibana.conf /etc/init/kibana.conf
+service kibana start
+popd
+
+# Up the open FD limit for everyone
+echo "soft nofile 1000000" >> /etc/security/limits.conf
+echo "hard nofile 1000000" >> /etc/security/limits.conf
+
+cat - <<FINISHED
+Elasticsearch installation now complete. 
+
+Services running:
+
+  Logstash indexer
+  Elasticsearch
+  Redis
+  Kibana
+
+Kibana is listening on port 80.
+
+FINISHED
