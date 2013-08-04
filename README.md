@@ -11,7 +11,7 @@ Adding tags to certain types of logs allows you to quickly retrieve them and kee
 The server keeps logs in a redis queue until they can be drained into elasticsearch. Neither redis nor elasticsearch are required to be on the server, but they are nevertheless required. 
 
 # The frontend
-While not a direct part of the logstash project, Kibana works on top of logstash to give you visualization and montoring tools. Kibana also gives you the flexability to define patterns and filters and then watch the stream for these matches come in realtime.
+While not a direct part of the logstash project, Kibana works on top of logstash to give you visualization and montoring tools. Kibana also gives you the flexibility to define patterns and filters and then watch the stream for these matches as they happen in realtime.
 
 ![logstash running with varnishncsa](http://i.imgur.com/SwbL8eO.png?1 "Logstash running with Varnishncsa")
 
@@ -22,6 +22,6 @@ The entire setup has been automated. Simply run:
 $ sudo ./logstash_server
 ```
 
-All of the logstash services (elasticsearch, logstash, and Kibana) will be listening on their default ports.
+Elasticsearch, logstash, and redis will be listening on their default port. Kibana will be listening on port 80.
 
 You may want to change the default data directory for Elasticsearch.
