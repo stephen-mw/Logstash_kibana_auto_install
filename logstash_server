@@ -41,10 +41,10 @@ popd
 pushd /opt/
 git clone --branch=kibana-ruby https://github.com/rashidkpc/Kibana.git
 pushd Kibana
-sed -i 's#KibanaHost =.*#KibanaHost = 0.0.0.0#' KibanaConfig.rb
+sed -i 's#KibanaHost =.*#KibanaHost = "0.0.0.0"#' KibanaConfig.rb
 sed -i 's#KibanaPort =.*#KibanaPort = 80#' KibanaConfig.rb
 gem install bundler
-bundle installvm
+bundle install
 cp $ROOT/init/kibana.conf /etc/init/kibana.conf
 service kibana start
 popd
