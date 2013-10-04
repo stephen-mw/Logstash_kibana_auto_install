@@ -6,6 +6,7 @@ set -e
 # Grab the fullpath of our root directory
 ROOT=$(cd `dirname ${BASH_SOURCE[0]}` && echo $PWD)
 
+apt-get update
 apt-get install -y --force-yes redis-server openjdk-7-jre-headless rubygems
 
 # Redis serves as the queue for logstash logs
