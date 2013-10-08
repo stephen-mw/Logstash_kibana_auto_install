@@ -7,7 +7,7 @@ set -e
 ROOT=$(cd `dirname ${BASH_SOURCE[0]}` && echo $PWD)
 
 apt-get update
-apt-get install -y --force-yes redis-server openjdk-7-jre-headless rubygems
+apt-get install -y --force-yes redis-server openjdk-7-jre-headless rubygems ruby1.9.1-dev
 
 # Redis serves as the queue for logstash logs
 sed -ie 's#bind 127.0.0.1#bind 0.0.0.0#' /etc/redis/redis.conf
