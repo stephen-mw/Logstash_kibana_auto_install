@@ -6,6 +6,9 @@ set -e
 # Grab the fullpath of our root directory
 ROOT=$(cd `dirname ${BASH_SOURCE[0]}` && echo $PWD)
 
+# We'll set this header when using wget to be good network tenants
+HEADER="Referer: https://github.com/stephendotexe/Logstash_kibana_auto_install"
+
 apt-get update
 apt-get install -y --force-yes redis-server openjdk-7-jre-headless rubygems ruby1.9.1-dev
 
@@ -18,7 +21,8 @@ sysctl -p
 /etc/init.d/redis-server restart
 
 # Install and configure elasticsearch
-wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.1.deb -O /tmp/elasticsearch.deb
+wget --header "$HEADER" https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.1.deb \
+  -O /tmp/elasticsearch.deb
 dpkg -i /tmp/elasticsearch.deb
 rm /tmp/elasticsearch.deb
 
@@ -31,7 +35,8 @@ cp $ROOT/default/elasticsearch /etc/default/elasticsearch
 # Logstash is just a jar and requires some additional configs
 LOGHOME=/etc/logstash
 mkdir $LOGHOME && pushd $LOGHOME
-wget https://logstash.objects.dreamhost.com/release/logstash-1.1.13-flatjar.jar -O logstash.jar
+wget "$HEADER" https://logstash.objects.dreamhost.com/release/logstash-1.1.13-flatjar.jar \
+  -O logstash.jar
 cp $ROOT/conf/indexer.conf .
 cp $ROOT/init/logstash.conf /etc/init/
 mkdir /var/lib/logstash # Required working directory for logstash
