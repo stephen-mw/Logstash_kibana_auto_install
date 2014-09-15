@@ -7,7 +7,7 @@ set -e
 ROOT=$(cd `dirname ${BASH_SOURCE[0]}` && echo $PWD)
 
 # We'll set this header when using wget to be good network tenants
-HEADER="Referer: https://github.com/stephendotexe/Logstash_kibana_auto_install"
+HEADER="Referer: https://github.com/stephen-mw/Logstash_kibana_auto_install"
 
 apt-get update
 apt-get install -y --force-yes redis-server openjdk-7-jre-headless rubygems ruby1.9.1-dev
@@ -60,7 +60,7 @@ echo "soft nofile 1000000" >> /etc/security/limits.conf
 echo "hard nofile 1000000" >> /etc/security/limits.conf
 
 cat - <<FINISHED
-Elasticsearch installation now complete. 
+Elasticsearch installation now complete.
 
 Services running:
 

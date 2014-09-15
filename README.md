@@ -8,7 +8,7 @@ Logstash has two parts, the indexer and the server. The indexer works on a speci
 
 Adding tags to certain types of logs allows you to quickly retrieve them and keep track of trending information.
 
-The server keeps logs in a redis queue until they can be drained into elasticsearch. Neither redis nor elasticsearch are required to be on the server, but they are nevertheless required. 
+The server keeps logs in a redis queue until they can be drained into elasticsearch. Neither redis nor elasticsearch are required to be on the server, but they are nevertheless required.
 
 # The frontend
 While not a direct part of the logstash project, Kibana works on top of logstash to give you visualization and montoring tools. Kibana also gives you the flexibility to define patterns and filters and then watch the stream for these matches as they happen in realtime.
