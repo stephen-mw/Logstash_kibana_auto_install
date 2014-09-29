@@ -29,6 +29,10 @@ You may want to change the default data directory for Elasticsearch.
 ### Requirements
 There's no special requirements other than Ubuntu 12.04.
 
+The script does make some wide assumptions about the state of your system. It assumes mostly it's a fresh machine without any previous version of elasticsearch, logstash, or java installed (or anything at /etc/logstash).
+
+If these files or directories exist, please remove them before running the script. You can also turn off the "exit on error" flag (```set -e```) at the top of the script to try and resume a broken installation.
+
 # Testing
 You can test the installation out in Vagrant first before running it. There's an included Vagrantfile. Simply clone the directory and run:
 ```bash
