@@ -25,3 +25,12 @@ $ sudo ./logstash_server
 Elasticsearch, logstash, and redis will be listening on their default port. Kibana will be listening on port 80.
 
 You may want to change the default data directory for Elasticsearch.
+
+### Requirements
+There's no special requirements other than Ubuntu 12.04.
+
+# Testing
+You can test the installation out in Vagrant first before running it. There's an included Vagrantfile. Simply clone the directory and run:
+```bash
+$ vagrant up
+```

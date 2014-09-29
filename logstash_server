@@ -3,14 +3,20 @@ set -e
 
 # This script will automatically install and configure Logstash and Kibana
 
-# Grab the fullpath of our root directory
-ROOT=$(cd `dirname ${BASH_SOURCE[0]}` && echo $PWD)
+# Special setup for Vagrant test
+if [[ -d '/vagrant' ]]; then
+  ROOT='/vagrant'
+else
+  # Grab the fullpath of our root directory
+  ROOT=$(cd `dirname ${BASH_SOURCE[0]}` && echo $PWD)
+fi
 
 # We'll set this header when using wget to be good network tenants
 HEADER="Referer: https://github.com/stephen-mw/Logstash_kibana_auto_install"
 
 apt-get update
-apt-get install -y --force-yes redis-server openjdk-7-jre-headless rubygems ruby1.9.1-dev
+apt-get install -y git-core redis-server openjdk-7-jre-headless rubygems \
+  ruby1.9.1-dev
 
 # Redis serves as the queue for logstash logs
 sed -ie 's#bind 127.0.0.1#bind 0.0.0.0#' /etc/redis/redis.conf
@@ -35,7 +41,7 @@ cp $ROOT/default/elasticsearch /etc/default/elasticsearch
 # Logstash is just a jar and requires some additional configs
 LOGHOME=/etc/logstash
 mkdir $LOGHOME && pushd $LOGHOME
-wget "$HEADER" https://logstash.objects.dreamhost.com/release/logstash-1.1.13-flatjar.jar \
+wget --header "$HEADER" https://logstash.objects.dreamhost.com/release/logstash-1.1.13-flatjar.jar \
   -O logstash.jar
 cp $ROOT/conf/indexer.conf .
 cp $ROOT/init/logstash.conf /etc/init/

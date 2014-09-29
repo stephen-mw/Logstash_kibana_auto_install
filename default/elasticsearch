@@ -4,4 +4,4 @@
 MAX_OPEN_FILES=65535
 
 # This is 1/2 the system memory, as recommended by the ES gurus
-ES_JAVA_OPTS="-Xmx96g -Xms96g -Des.index.storage.type=memory"
+ES_JAVA_OPTS="-Xmx1g -Xms1g -Des.index.storage.type=memory"
