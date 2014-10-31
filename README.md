@@ -1,3 +1,8 @@
+# Update
+You probably want to use the newest version of Kibana. This one is no longer supported. You can find the auto install for that here:
+
+https://github.com/stephen-mw/Logstash1.2_kibana3_auto_install
+
 # What is Logstash?
 Logstash is a log indexer built on top of elasticsearch. It aggregates logs from multiple sources and allows you to query them using the [Apache Lucene query parser syntax](http://lucene.apache.org/core/2_9_4/queryparsersyntax.html).
 
