@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/stephen-mw/Logstash_kibana_auto_install.svg?branch=master)](https://travis-ci.org/stephen-mw/Logstash_kibana_auto_install)
+
 # Update
 You probably want to use the newest version of Kibana. This one is no longer supported. You can find the auto install for that here:
 

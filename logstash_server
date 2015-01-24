@@ -3,6 +3,9 @@ set -e
 
 # This script will automatically install and configure Logstash and Kibana
 
+# For running Travis
+TRAVIS=$1
+
 # Special setup for Vagrant test
 if [[ -d '/vagrant' ]]; then
   ROOT='/vagrant'
@@ -20,10 +23,14 @@ apt-get install -y git-core redis-server openjdk-7-jre-headless rubygems \
 
 # Redis serves as the queue for logstash logs
 sed -ie 's#bind 127.0.0.1#bind 0.0.0.0#' /etc/redis/redis.conf
+
 # This keeps redis background dumping from crashing if you run low
-# on system memory.
-echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
-sysctl -p
+# on system memory. Don't do this in travis containers.
+if [[ -z "${TRAVIS}" ]]; then
+  echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
+  sysctl -p
+fi
+
 /etc/init.d/redis-server restart
 
 # Install and configure elasticsearch
@@ -51,7 +58,7 @@ popd
 
 # Install and configure the Kibana frontend
 pushd /opt/
-git clone --branch=kibana-ruby https://github.com/rashidkpc/Kibana.git
+git clone --branch=kibana-ruby https://github.com/stephen-mw/kibana2.git Kibana
 pushd Kibana
 sed -i 's#KibanaHost =.*#KibanaHost = "0.0.0.0"#' KibanaConfig.rb
 sed -i 's#KibanaPort =.*#KibanaPort = 80#' KibanaConfig.rb
